@@ -19,7 +19,6 @@ uint counter;
          bool dateOfBirth;
          bool gender;
          bool phoneNumber;
-         address toAddress;
          address sender;
          address reciever;
     }
@@ -56,7 +55,7 @@ uint counter;
    }
 
    Proposal[] proposals;
-   function sendProposal(address s, address r, uint pid, bool fn, bool ln, bool dob, bool gn, bool ph) public {
+   function sendProposal(address s, address r, bool fn, bool ln, bool dob, bool gn, bool ph) public {
 
        Proposal memory pr = Proposal({proposalId: getCounter(), firstName:fn, lastName:ln, dateOfBirth:dob, gender:gn, phoneNumber:ph, sender:s, reciever:r});
         proposals.push(pr);
@@ -67,7 +66,7 @@ uint counter;
     //Grant[] sentGrants;
     function sendGrant(address s, address r, uint pid, bool fn, bool ln, bool dob, bool gn, bool ph) public {
 
-       Grant memory g = Grant();
+       Grant memory g = Grant({grantId:0, proposalId:0, sender:msg.sender, reciever:msg.sender, firstName:"", lastName:"", gender:"", phoneNumber:"",dateOfBirth:""});
         g.grantId=getCounter();
         g.proposalId=pid;
         g.sender=s;
@@ -119,29 +118,6 @@ uint counter;
       return pIds;
  }
 
- function viewSentGrant(address addOfLoggedInUser) public returns(uint[]  viewSentGrantIds){
-
- }
-
- function viewReceivedGrant(address addOfLoggedInUser) public returns(uint[]  viewReceivedGrantIds){
-
- }
-
-function cancelSentProposal(uint proposalId) {
-
-}
-
-function revokeSentGrant(uint grantId) {
-
-}
-
-function rejectReceivedProposal() {
-
-}
-
-function acceptReceivedProposal() {
-
-}
 function getCounter() private returns(uint cnt) {
       return counter + 1;
     }
