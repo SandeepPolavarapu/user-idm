@@ -81,7 +81,7 @@ export class HomeComponent {
 
   sendProposal = () => {
     this.checkAndInstantiateWeb3();
-    alert(this.toaccount);
+    //alert(this.toaccount);
       let meta;
       this.UserIdentityManager
         .deployed()
