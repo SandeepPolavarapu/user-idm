@@ -1,7 +1,7 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 const Web3 = require('web3');
 const contract = require('truffle-contract');
-const userIdArtifacts = require('../../build/contracts/UserIdentityManagement.json');
+const adoptionArtifacts = require('../../build/contracts/Adoption.json');
 
 declare var window: any;
 declare var require: any;
@@ -14,7 +14,7 @@ declare var require: any;
 export class AppComponent {
   title = 'Identity Management';
 
-  UserIdentityManagement = contract(userIdArtifacts);
+  Adoption = contract(adoptionArtifacts);
 
   // TODO add proper types these variables
   account: any;
@@ -51,9 +51,8 @@ export class AppComponent {
   };
 
   onReady = () => {
-    // Bootstrap the MetaCoin abstraction for Use.
-    this.UserIdentityManagement.setProvider(this.web3.currentProvider);
-
+    // Bootstrap the Adoption abstraction for Use.
+    this.Adoption.setProvider(this.web3.currentProvider);
     // Get the initial account balance so it can be displayed.
     this.web3.eth.getAccounts((err, accs) => {
       if (err != null) {
@@ -69,7 +68,7 @@ export class AppComponent {
       }
       this.accounts = accs;
       this.account = this.accounts[0];
-
+      this.setStatus("Success: Account is "+this.account);
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
       //this._ngZone.run(() =>
@@ -78,10 +77,33 @@ export class AppComponent {
     });
   };
 
-  
-
   setStatus = message => {
     this.status = message;
+    //alert(message);
   };
-  
-}
+
+  handleAdopt = () => {
+    var petId = "2";
+
+    alert("hi");
+      let meta;
+      this.Adoption
+        .deployed()
+        .then(instance => {
+        meta = instance;
+        // Execute adopt as a transaction by sending account
+        return meta.adopt(petId, {
+          from: this.account
+        });        
+      })
+      .then(value => {
+        this.setStatus('Transaction complete!'+value);
+      })
+      .catch(e => {    
+        console.log(e.message);
+        this.setStatus('Error adopting dog; see log.');
+      });
+    
+  }
+
+};
