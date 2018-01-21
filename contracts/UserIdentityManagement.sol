@@ -118,6 +118,27 @@ uint counter;
       return pIds;
  }
 
+ function viewSentGrant(address s) public returns(uint[] grantIds) {
+
+   uint[] gIds;
+      for (uint index = 0; index < grants.length; index++) {
+        if (grants[index].sender == s) {
+              gIds.push(grants[index].grantId);
+        }
+      }
+      return gIds;
+ }
+
+  function viewReceivedGrants(address r) public returns(uint[] grantIds) {
+    uint[]  gIds;
+    for (uint index = 0; index < grants.length; index++) {
+        if (grants[index].reciever == r) {
+              gIds.push(grants[index].grantId);
+        }
+      }
+      return gIds;
+ }
+
 function getCounter() private returns(uint cnt) {
       return counter + 1;
     }
