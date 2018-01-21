@@ -92,7 +92,7 @@ export class AppComponent {
   }
 
   handleAdopt = () => {
-    var petId = "2";        
+    var petId = "2";
       let meta;
       this.Adoption
         .deployed()
@@ -101,16 +101,16 @@ export class AppComponent {
         // Execute adopt as a transaction by sending account
         return meta.adopt(petId, {
           from: this.account
-        });        
+        });
       })
       .then(value => {
         this.setStatus('Transaction complete!'+value);
       })
-      .catch(e => {    
+      .catch(e => {
         console.log(e.message);
         this.setStatus('Error adopting dog; see log.');
       });
-    
+
   }
 
 };

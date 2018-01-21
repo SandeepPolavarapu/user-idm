@@ -12,7 +12,7 @@
         </div>
         <!-- /.navbar-header -->
 
-        <ul class="nav navbar-top-links navbar-right">            
+        <ul class="nav navbar-top-links navbar-right">
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -49,10 +49,10 @@
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                    </li>                   
+                    </li>
                     <li>
                         <a href="#"><i class="fa fa-files-o fa-fw"></i>Identity Management<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">                            
+                        <ul class="nav nav-second-level">
                             <li>
                                 <a href="#">Revoke Access</a>
                             </li>
@@ -76,6 +76,19 @@
                 <h1 class="page-header">Identity Dashboard</h1>
             </div>
             <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <form (ngSubmit)="sendProposal()" #proposalForm="ngForm">
+                <div class="form-group">
+                    <label for="toAccount">To Account</label>
+                    <input type="text" class="form-control" name="toaccount"  required
+                    [(ngModel)]="toaccount" />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">Send Proposal</button>
+                </div>
+                </form>
+                <h4>{{status}}</h4>
         </div>
         <!-- /.row -->
         <div class="row">
@@ -201,7 +214,7 @@
                                         <td>PAN</td>
                                         <td>Name, Age</td>
                                         <td><a href='#'>Cancel</a></td>
-                                    </tr>                                   
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -236,7 +249,7 @@
                                             <td>Aadhar</td>
                                             <td>Name, DOB</td>
                                             <td><a href='#'>Reject</a> | <a href='#'>Accept</a></td>
-                                        </tr>                                        
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -316,7 +329,7 @@
                                         <th>Grant #</th>
                                         <th>Agency Name</th>
                                         <th>Identity</th>
-                                        <th>Attributes</th>                                        
+                                        <th>Attributes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -324,20 +337,20 @@
                                         <td>1</td>
                                         <td>AB Telecom</td>
                                         <td>Aadhar</td>
-                                        <td>Name, DOB</td>                                        
+                                        <td>Name, DOB</td>
                                     </tr>
                                     <tr class="info">
                                         <td>2</td>
                                         <td>12 Bank</td>
                                         <td>PAN</td>
-                                        <td>Name, Age</td>                                        
+                                        <td>Name, Age</td>
                                     </tr>
                                     <tr class="warning">
                                         <td>3</td>
                                         <td>XY Telecom</td>
                                         <td>Aadhar</td>
-                                        <td>Name, DOB</td>                                        
-                                    </tr>                                    
+                                        <td>Name, DOB</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -349,4 +362,4 @@
         </div>
         </div>
     </div>
-  </div>  
+  </div>
