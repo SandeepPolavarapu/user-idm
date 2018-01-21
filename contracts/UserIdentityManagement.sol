@@ -139,8 +139,64 @@ uint counter;
       return gIds;
  }
 
-function getCounter() private returns(uint cnt) {
-      return counter + 1;
+ function getGrantById(uint gId) returns (address s, address r, uint pid, string fn, string ln, string dob, string gn, string ph) {
+   for (uint index = 0; index < grants.length; index++) {
+      if(grants[index].grantId == gId) {
+          s =  grants[index].sender;
+          r  = grants[index].reciever;
+          pid = grants[index].proposalId;
+          fn = grants[index].firstName;
+          ln = grants[index].lastName;
+          dob = grants[index].dateOfBirth;
+          gn = grants[index].gender;
+          ph = grants[index].phoneNumber;
+      }
+   }
+ }
+
+ function getProposalById(uint pId) returns (address s, address r, uint pid, bool fn, bool ln, bool dob, bool gn, bool ph) {
+   for (uint index = 0; index < proposals.length; index++) {
+      if(proposals[index].proposalId == pId) {
+          s= proposals[index].sender;
+          r = proposals[index].reciever;
+          pid = proposals[index].proposalId;
+          fn =proposals[index].firstName;
+          ln =proposals[index].lastName;
+          dob = proposals[index].dateOfBirth;
+          gn = proposals[index].gender;
+          ph =proposals[index].phoneNumber;
+      }
+   }
+ }
+
+function acceptProposal(address s, address r, uint pid, bool fn, bool ln, bool dob, bool gn, bool ph) {
+
+//TODO:Check sender's ownership
+     sendGrant( s,  r,  pid,  fn,  ln, dob, gn, ph);
+
+}
+
+function rejectProposal(address s, address r, bool fn, bool ln, bool dob, bool gn, bool ph) returns(string message) {
+
+//TODO:Check sender's ownership
+      return "Forbidden Request";
+
+}
+
+function revokeGrant(uint gId, address r) {
+  for (uint index = 0; index < grants.length; index++) {
+      if (grants[index].grantId == gId) {
+          grants[index].firstName = "";
+          grants[index].lastName = "";
+          grants[index].gender = "";
+          grants[index].phoneNumber = "";
+          grants[index].dateOfBirth = "";
+      }
     }
+}
+
+function getCounter() private returns (uint cnt) {
+      return counter + 1;
+ }
 
 }
