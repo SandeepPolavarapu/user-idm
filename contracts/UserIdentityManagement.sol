@@ -2,7 +2,8 @@ pragma solidity ^0.4.1;
 
 contract UserIdentityManagement {
 
-   struct Citizen {
+uint counter;
+   struct Account {
        string firstName;
        string lastName;
        string dateOfBirth;
@@ -19,10 +20,15 @@ contract UserIdentityManagement {
          bool gender;
          bool phoneNumber;
          address toAddress;
+         address sender;
+         address reciever;
     }
 
     struct Grant {
-       string proposalId;
+       uint grantId;
+       uint proposalId;
+       address sender;
+       address reciever;
        string firstName;
        string lastName;
        string dateOfBirth;
@@ -31,21 +37,12 @@ contract UserIdentityManagement {
     }
 
    address owner;
-   mapping(address => Citizen) citizens;
-   mapping(address => Proposal) proposals;
-   mapping(address => Grant) grants;
+   mapping(address => Account) citizens;
+  // mapping(address => Proposal) proposals;
+  // mapping(address => Grant) grants;
 
-   function MyIdentity() public {
+   function UserIdentityManagement() public {
         owner = msg.sender;
-   }
-
-   function authenticate(address toVerify) returns (address isAuthenticated) {
-
-      // Authenticate Logic
-      if (owner==msg.sender || citizens[toVerify].isLocked) {
-          return toVerify;
-      }
-      return toVerify;
    }
 
    function lock(address toLock) returns (bool isLocked) {
@@ -58,35 +55,30 @@ contract UserIdentityManagement {
        return citizens[toLock].isLocked;
    }
 
-   Proposal[] recievedProposals;
-   function sendProposal(address receiverAddress) public {
-        proposals[receiverAddress].firstName = true;
-        proposals[receiverAddress].lastName = false;
-        proposals[receiverAddress].dateOfBirth = true;
-        proposals[receiverAddress].gender = false;
-        proposals[receiverAddress].phoneNumber = false;
-        proposals[receiverAddress].toAddress = receiverAddress;
-        proposals[receiverAddress].proposalId = proposals[receiverAddress].proposalId+1;
+   Proposal[] proposals;
+   function sendProposal(address s, address r, uint pid, bool fn, bool ln, bool dob, bool gn, bool ph) public {
 
-        recievedProposals.push(proposals[receiverAddress]);
+       Proposal memory pr = Proposal({proposalId: getCounter(), firstName:fn, lastName:ln, dateOfBirth:dob, gender:gn, phoneNumber:ph, sender:s, reciever:r});
+        proposals.push(pr);
     }
 
 
-    Grant[] receivedGrants;
-    uint[] sentProposalIds;
-    function sendGrant(Proposal requester) public {
-        address requesterAddress = requester.toAddress;
+    Grant[] grants;
+    //Grant[] sentGrants;
+    function sendGrant(address s, address r, uint pid, bool fn, bool ln, bool dob, bool gn, bool ph) public {
 
-        if (requester.firstName) {grants[requesterAddress].firstName = citizens[requesterAddress].firstName;}
-        if (requester.lastName) {grants[requesterAddress].lastName = citizens[requesterAddress].lastName;}
-        if (requester.gender) {grants[requesterAddress].gender = citizens[requesterAddress].gender;}
-        if (requester.phoneNumber) {grants[requesterAddress].phoneNumber = citizens[requesterAddress].phoneNumber;}
-        if (requester.dateOfBirth) {grants[requesterAddress].dateOfBirth = citizens[requesterAddress].dateOfBirth;}
-        // grants[requestAddress].proposalId =requester.proposalId;
+       Grant memory g = Grant();
+        g.grantId=getCounter();
+        g.proposalId=pid;
+        g.sender=s;
+        g.reciever =r;
 
-
-        receivedGrants.push(grants[requesterAddress]);
-        sentProposalIds.push(requester.proposalId);
+        if (fn) {g.firstName = citizens[s].firstName;}
+        if (ln) {g.lastName = citizens[s].lastName;}
+        if (gn) {g.gender = citizens[s].gender;}
+        if (ph) {g.phoneNumber = citizens[s].phoneNumber;}
+        if (dob) {g.dateOfBirth = citizens[s].dateOfBirth;}
+        grants.push(g);
     }
 
 
@@ -104,18 +96,27 @@ contract UserIdentityManagement {
         }
     }
 
-    uint expirationTime;
-    function getExpirationTime() public {
-        uint currentTime = 10;
-        expirationTime = currentTime + 10;
-    }
+  function viewSentProposals(address s) public returns(uint[] proposalIds) {
 
-  function viewSentProposals(address addOfLoggedInUser) public returns(uint[] proposalIds) {
-     return sentProposalIds;
+     uint[] pIds;
+      for (uint index = 0; index < proposals.length; index++) {
+        if (proposals[index].sender == s) {
+              pIds.push(proposals[index].proposalId);
+        }
+      }
+
+      return pIds;
+
   }
 
-  function viewReceivedProposals(address addOfLoggedInUser) public returns(uint[] receivedProposalIds) {
-    // receivedProposalIds.push(recievedProposals[addOfLoggedInUser].proposalId);
+  function viewReceivedProposals(address r) public returns(uint[] proposalIds) {
+    uint[]  pIds;
+    for (uint index = 0; index < proposals.length; index++) {
+        if (proposals[index].reciever == r) {
+              pIds.push(proposals[index].proposalId);
+        }
+      }
+      return pIds;
  }
 
  function viewSentGrant(address addOfLoggedInUser) public returns(uint[]  viewSentGrantIds){
@@ -125,4 +126,24 @@ contract UserIdentityManagement {
  function viewReceivedGrant(address addOfLoggedInUser) public returns(uint[]  viewReceivedGrantIds){
 
  }
+
+function cancelSentProposal(uint proposalId) {
+
+}
+
+function revokeSentGrant(uint grantId) {
+
+}
+
+function rejectReceivedProposal() {
+
+}
+
+function acceptReceivedProposal() {
+
+}
+function getCounter() private returns(uint cnt) {
+      return counter + 1;
+    }
+
 }
