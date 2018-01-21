@@ -139,18 +139,32 @@ uint counter;
       return gIds;
  }
 
- function getGrantById(uint gId) returns (Grant gDetails) {
+ function getGrantById(uint gId) returns (address s, address r, uint pid, string fn, string ln, string dob, string gn, string ph) {
    for (uint index = 0; index < grants.length; index++) {
       if(grants[index].grantId == gId) {
-          return grants[index];
+          s =  grants[index].sender;
+          r  = grants[index].reciever;
+          pid = grants[index].proposalId;
+          fn = grants[index].firstName;
+          ln = grants[index].lastName;
+          dob = grants[index].dateOfBirth;
+          gn = grants[index].gender;
+          ph = grants[index].phoneNumber;
       }
    }
  }
 
- function getProposalById(uint pId) returns (Proposal pDetails) {
+ function getProposalById(uint pId) returns (address s, address r, uint pid, bool fn, bool ln, bool dob, bool gn, bool ph) {
    for (uint index = 0; index < proposals.length; index++) {
       if(proposals[index].proposalId == pId) {
-          return proposals[index];
+          s= proposals[index].sender;
+          r = proposals[index].reciever;
+          pid = proposals[index].proposalId;
+          fn =proposals[index].firstName;
+          ln =proposals[index].lastName;
+          dob = proposals[index].dateOfBirth;
+          gn = proposals[index].gender;
+          ph =proposals[index].phoneNumber;
       }
    }
  }
