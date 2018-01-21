@@ -1,0 +1,352 @@
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">User Identity Management</a>
+        </div>
+        <!-- /.navbar-header -->
+
+        <ul class="nav navbar-top-links navbar-right">            
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    </li>
+                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="sidebar-search">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                        </div>
+                        <!-- /input-group -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    </li>                   
+                    <li>
+                        <a href="#"><i class="fa fa-files-o fa-fw"></i>Identity Management<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">                            
+                            <li>
+                                <a href="#">Revoke Access</a>
+                            </li>
+                            <li>
+                                <a href="#">Contact Support</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Identity Dashboard</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-hashtag fa-4x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">2</div>
+                                <div>Sent Proposals</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="javascript:showTab('sp-tab')">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-envelope fa-4x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">1</div>
+                                <div>Received Proposals</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="javascript:showTab('rp-tab')">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-support fa-4x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">4</div>
+                                <div>Sent Grants</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="javascript:showTab('sg-tab')">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-user-secret fa-4x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">3</div>
+                                <div>Received Grants</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="javascript:showTab('rg-tab')">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row" >
+            <div id="sp-tab" class="col-lg-12 tab-pg">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Sent Proposals: User Agencies with your Identity proposal</b>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Proposal #</th>
+                                        <th>Agency Name</th>
+                                        <th>Identity</th>
+                                        <th>Attributes</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="success">
+                                        <td>1</td>
+                                        <td>AB Telecom</td>
+                                        <td>Aadhar</td>
+                                        <td>Name, DOB</td>
+                                        <td><a href='#'>Cancel</a></td>
+                                    </tr>
+                                    <tr class="info">
+                                        <td>2</td>
+                                        <td>12 Bank</td>
+                                        <td>PAN</td>
+                                        <td>Name, Age</td>
+                                        <td><a href='#'>Cancel</a></td>
+                                    </tr>                                   
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+                <!-- /.panel -->
+                <div id="rp-tab" class="col-lg-12 tab-pg">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Received Proposals: User Agencies requesting access to your Identity</b>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Proposal #</th>
+                                            <th>Agency Name</th>
+                                            <th>Identity</th>
+                                            <th>Attributes</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="success">
+                                            <td>1</td>
+                                            <td>AB Telecom</td>
+                                            <td>Aadhar</td>
+                                            <td>Name, DOB</td>
+                                            <td><a href='#'>Reject</a> | <a href='#'>Accept</a></td>
+                                        </tr>                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+                    <!-- /.panel -->
+                    <div id="sg-tab" class="col-lg-12 tab-pg">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <b>Sent Grants: User Agencies having access to your Identity</b>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Grant #</th>
+                                                <th>Agency Name</th>
+                                                <th>Identity</th>
+                                                <th>Attributes</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="success">
+                                                <td>1</td>
+                                                <td>AB Telecom</td>
+                                                <td>Aadhar</td>
+                                                <td>Name, DOB</td>
+                                                <td><a href='#'>Revoke</a></td>
+                                            </tr>
+                                            <tr class="info">
+                                                <td>2</td>
+                                                <td>12 Bank</td>
+                                                <td>PAN</td>
+                                                <td>Name, Age</td>
+                                                <td><a href='#'>Revoke</a></td>
+                                            </tr>
+                                            <tr class="warning">
+                                                <td>3</td>
+                                                <td>XY Telecom</td>
+                                                <td>Aadhar</td>
+                                                <td>Name, DOB</td>
+                                                <td><a href='#'>Revoke</a></td>
+                                            </tr>
+                                            <tr class="danger">
+                                                <td>4</td>
+                                                <td>34 Bank</td>
+                                                <td>PAN</td>
+                                                <td>Name, Age</td>
+                                                <td><a href='#'>Revoke</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.table-responsive -->
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+            <div id="rg-tab" class="col-lg-12 tab-pg">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Received Grants: Govenment Agencies provided Identity to you</b>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Grant #</th>
+                                        <th>Agency Name</th>
+                                        <th>Identity</th>
+                                        <th>Attributes</th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="success">
+                                        <td>1</td>
+                                        <td>AB Telecom</td>
+                                        <td>Aadhar</td>
+                                        <td>Name, DOB</td>                                        
+                                    </tr>
+                                    <tr class="info">
+                                        <td>2</td>
+                                        <td>12 Bank</td>
+                                        <td>PAN</td>
+                                        <td>Name, Age</td>                                        
+                                    </tr>
+                                    <tr class="warning">
+                                        <td>3</td>
+                                        <td>XY Telecom</td>
+                                        <td>Aadhar</td>
+                                        <td>Name, DOB</td>                                        
+                                    </tr>                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+        </div>
+        </div>
+    </div>
+  </div>  

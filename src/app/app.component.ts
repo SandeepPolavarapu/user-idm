@@ -21,6 +21,10 @@ export class AppComponent {
   accounts: any;
   web3: any;
   status: string;
+
+  username:string;
+  password:string;
+  isLogged: boolean;
   constructor(private _ngZone: NgZone) {
 
   }
@@ -52,6 +56,7 @@ export class AppComponent {
 
   onReady = () => {
     // Bootstrap the Adoption abstraction for Use.
+    this.isLogged = false;
     this.Adoption.setProvider(this.web3.currentProvider);
     // Get the initial account balance so it can be displayed.
     this.web3.eth.getAccounts((err, accs) => {
@@ -68,7 +73,7 @@ export class AppComponent {
       }
       this.accounts = accs;
       this.account = this.accounts[0];
-      this.setStatus("Success: Account is "+this.account);
+      //this.setStatus("Success: Account is "+this.account);
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
       //this._ngZone.run(() =>
@@ -82,10 +87,12 @@ export class AppComponent {
     //alert(message);
   };
 
-  handleAdopt = () => {
-    var petId = "2";
+  handleLogin = () => {
+    this.isLogged = true;
+  }
 
-    alert("hi");
+  handleAdopt = () => {
+    var petId = "2";        
       let meta;
       this.Adoption
         .deployed()
