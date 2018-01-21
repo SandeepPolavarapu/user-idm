@@ -1,66 +1,128 @@
-pragma solidity ^0.4.2;
+pragma solidity ^0.4.1;
 
-contract UserIdentityManagement{
+contract UserIdentityManagement {
 
-	struct Voter {
-        uint weight;
-        bool voted;
-        uint8 vote;
-        address delegate;
-    }
-    struct Proposal {
-        uint voteCount;
-    }
+   struct Citizen {
+       string firstName;
+       string lastName;
+       string dateOfBirth;
+       string phoneNumber;
+       string gender;
+       bool isLocked;
+   }
 
-    address chairperson;
-    mapping(address => Voter) voters;
-    Proposal[] proposals;
-
-    /// Create a new ballot with $(_numProposals) different proposals.
-    function Ballot(uint8 _numProposals) public {
-        chairperson = msg.sender;
-        voters[chairperson].weight = 1;
-        proposals.length = _numProposals;
+   struct Proposal {
+         uint proposalId;
+         bool firstName;
+         bool lastName;
+         bool dateOfBirth;
+         bool gender;
+         bool phoneNumber;
+         address toAddress;
     }
 
-    /// Give $(toVoter) the right to vote on this ballot.
-    /// May only be called by $(chairperson).
-    function giveRightToVote(address toVoter) public {
-        if (msg.sender != chairperson || voters[toVoter].voted) return;
-        voters[toVoter].weight = 1;
+    struct Grant {
+       string proposalId;
+       string firstName;
+       string lastName;
+       string dateOfBirth;
+       string phoneNumber;
+       string gender;
     }
 
-    /// Delegate your vote to the voter $(to).
-    function delegate(address to) public {
-        Voter storage sender = voters[msg.sender]; // assigns reference
-        if (sender.voted) return;
-        while (voters[to].delegate != address(0) && voters[to].delegate != msg.sender)
-            to = voters[to].delegate;
-        if (to == msg.sender) return;
-        sender.voted = true;
-        sender.delegate = to;
-        Voter storage delegateTo = voters[to];
-        if (delegateTo.voted)
-            proposals[delegateTo.vote].voteCount += sender.weight;
-        else
-            delegateTo.weight += sender.weight;
+   address owner;
+   mapping(address => Citizen) citizens;
+   mapping(address => Proposal) proposals;
+   mapping(address => Grant) grants;
+
+   function MyIdentity() public {
+        owner = msg.sender;
+   }
+
+   function authenticate(address toVerify) returns (address isAuthenticated) {
+
+      // Authenticate Logic
+      if (owner==msg.sender || citizens[toVerify].isLocked) {
+          return toVerify;
+      }
+      return toVerify;
+   }
+
+   function lock(address toLock) returns (bool isLocked) {
+       citizens[toLock].isLocked = true;
+       return citizens[toLock].isLocked;
+   }
+
+   function unLock(address toLock) returns (bool isLocked) {
+       citizens[toLock].isLocked = false;
+       return citizens[toLock].isLocked;
+   }
+
+   Proposal[] recievedProposals;
+   function sendProposal(address receiverAddress) public {
+        proposals[receiverAddress].firstName = true;
+        proposals[receiverAddress].lastName = false;
+        proposals[receiverAddress].dateOfBirth = true;
+        proposals[receiverAddress].gender = false;
+        proposals[receiverAddress].phoneNumber = false;
+        proposals[receiverAddress].toAddress = receiverAddress;
+        proposals[receiverAddress].proposalId = proposals[receiverAddress].proposalId+1;
+
+        recievedProposals.push(proposals[receiverAddress]);
     }
 
-    /// Give a single vote to proposal $(toProposal).
-    function vote(uint8 toProposal) public {
-        Voter storage sender = voters[msg.sender];
-        if (sender.voted || toProposal >= proposals.length) return;
-        sender.voted = true;
-        sender.vote = toProposal;
-        proposals[toProposal].voteCount += sender.weight;
+
+    Grant[] receivedGrants;
+    uint[] sentProposalIds;
+    function sendGrant(Proposal requester) public {
+        address requesterAddress = requester.toAddress;
+
+        if (requester.firstName) {grants[requesterAddress].firstName = citizens[requesterAddress].firstName;}
+        if (requester.lastName) {grants[requesterAddress].lastName = citizens[requesterAddress].lastName;}
+        if (requester.gender) {grants[requesterAddress].gender = citizens[requesterAddress].gender;}
+        if (requester.phoneNumber) {grants[requesterAddress].phoneNumber = citizens[requesterAddress].phoneNumber;}
+        if (requester.dateOfBirth) {grants[requesterAddress].dateOfBirth = citizens[requesterAddress].dateOfBirth;}
+        // grants[requestAddress].proposalId =requester.proposalId;
+
+
+        receivedGrants.push(grants[requesterAddress]);
+        sentProposalIds.push(requester.proposalId);
     }
 
-    function winningProposal() public constant returns (uint8 _winningProposal) {
-        uint256 winningVoteCount = 0;
-        for (uint8 prop = 0; prop < proposals.length; prop++)
-            if (proposals[prop].voteCount > winningVoteCount) {
-                winningVoteCount = proposals[prop].voteCount;
-                _winningProposal = prop;
-            }
+
+    uint[] requesterIndex;
+    mapping (uint => address) requesterMapping;
+    function getRequesterMapping(address requesterAddress, uint aId) public {
+
+             requesterMapping[aId] = requesterAddress;
+             requesterIndex.push(aId);
     }
+
+    function kill() public {
+        if ( msg.sender==owner) {
+            selfdestruct(owner);
+        }
+    }
+
+    uint expirationTime;
+    function getExpirationTime() public {
+        uint currentTime = 10;
+        expirationTime = currentTime + 10;
+    }
+
+  function viewSentProposals(address addOfLoggedInUser) public returns(uint[] proposalIds) {
+     return sentProposalIds;
+  }
+
+  function viewReceivedProposals(address addOfLoggedInUser) public returns(uint[] receivedProposalIds) {
+    // receivedProposalIds.push(recievedProposals[addOfLoggedInUser].proposalId);
+ }
+
+ function viewSentGrant(address addOfLoggedInUser) public returns(uint[]  viewSentGrantIds){
+
+ }
+
+ function viewReceivedGrant(address addOfLoggedInUser) public returns(uint[]  viewReceivedGrantIds){
+
+ }
 }
