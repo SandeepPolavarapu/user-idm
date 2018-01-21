@@ -1,66 +1,146 @@
-pragma solidity ^0.4.2;
+pragma solidity ^0.4.1;
 
-contract UserIdentityManagement{
+contract UserIdentityManagement {
 
-	struct Voter {
-        uint weight;
-        bool voted;
-        uint8 vote;
-        address delegate;
-    }
-    struct Proposal {
-        uint voteCount;
-    }
+uint counter;
+   struct Account {
+       string firstName;
+       string lastName;
+       string dateOfBirth;
+       string phoneNumber;
+       string gender;
+       bool isLocked;
+   }
 
-    address chairperson;
-    mapping(address => Voter) voters;
-    Proposal[] proposals;
-
-    /// Create a new ballot with $(_numProposals) different proposals.
-    function Ballot(uint8 _numProposals) public {
-        chairperson = msg.sender;
-        voters[chairperson].weight = 1;
-        proposals.length = _numProposals;
-    }
-
-    /// Give $(toVoter) the right to vote on this ballot.
-    /// May only be called by $(chairperson).
-    function giveRightToVote(address toVoter) public {
-        if (msg.sender != chairperson || voters[toVoter].voted) return;
-        voters[toVoter].weight = 1;
+   struct Proposal {
+         uint proposalId;
+         bool firstName;
+         bool lastName;
+         bool dateOfBirth;
+         bool gender;
+         bool phoneNumber;
+         address sender;
+         address reciever;
     }
 
-    /// Delegate your vote to the voter $(to).
-    function delegate(address to) public {
-        Voter storage sender = voters[msg.sender]; // assigns reference
-        if (sender.voted) return;
-        while (voters[to].delegate != address(0) && voters[to].delegate != msg.sender)
-            to = voters[to].delegate;
-        if (to == msg.sender) return;
-        sender.voted = true;
-        sender.delegate = to;
-        Voter storage delegateTo = voters[to];
-        if (delegateTo.voted)
-            proposals[delegateTo.vote].voteCount += sender.weight;
-        else
-            delegateTo.weight += sender.weight;
+    struct Grant {
+       uint grantId;
+       uint proposalId;
+       address sender;
+       address reciever;
+       string firstName;
+       string lastName;
+       string dateOfBirth;
+       string phoneNumber;
+       string gender;
     }
 
-    /// Give a single vote to proposal $(toProposal).
-    function vote(uint8 toProposal) public {
-        Voter storage sender = voters[msg.sender];
-        if (sender.voted || toProposal >= proposals.length) return;
-        sender.voted = true;
-        sender.vote = toProposal;
-        proposals[toProposal].voteCount += sender.weight;
+   address owner;
+   mapping(address => Account) citizens;
+  // mapping(address => Proposal) proposals;
+  // mapping(address => Grant) grants;
+
+   function UserIdentityManagement() public {
+        owner = msg.sender;
+   }
+
+   function lock(address toLock) returns (bool isLocked) {
+       citizens[toLock].isLocked = true;
+       return citizens[toLock].isLocked;
+   }
+
+   function unLock(address toLock) returns (bool isLocked) {
+       citizens[toLock].isLocked = false;
+       return citizens[toLock].isLocked;
+   }
+
+   Proposal[] proposals;
+   function sendProposal(address s, address r, bool fn, bool ln, bool dob, bool gn, bool ph) public {
+
+       Proposal memory pr = Proposal({proposalId: getCounter(), firstName:fn, lastName:ln, dateOfBirth:dob, gender:gn, phoneNumber:ph, sender:s, reciever:r});
+        proposals.push(pr);
     }
 
-    function winningProposal() public constant returns (uint8 _winningProposal) {
-        uint256 winningVoteCount = 0;
-        for (uint8 prop = 0; prop < proposals.length; prop++)
-            if (proposals[prop].voteCount > winningVoteCount) {
-                winningVoteCount = proposals[prop].voteCount;
-                _winningProposal = prop;
-            }
+
+    Grant[] grants;
+    //Grant[] sentGrants;
+    function sendGrant(address s, address r, uint pid, bool fn, bool ln, bool dob, bool gn, bool ph) public {
+
+       Grant memory g = Grant({grantId:0, proposalId:0, sender:msg.sender, reciever:msg.sender, firstName:"", lastName:"", gender:"", phoneNumber:"",dateOfBirth:""});
+        g.grantId=getCounter();
+        g.proposalId=pid;
+        g.sender=s;
+        g.reciever =r;
+
+        if (fn) {g.firstName = citizens[s].firstName;}
+        if (ln) {g.lastName = citizens[s].lastName;}
+        if (gn) {g.gender = citizens[s].gender;}
+        if (ph) {g.phoneNumber = citizens[s].phoneNumber;}
+        if (dob) {g.dateOfBirth = citizens[s].dateOfBirth;}
+        grants.push(g);
     }
+
+
+    uint[] requesterIndex;
+    mapping (uint => address) requesterMapping;
+    function getRequesterMapping(address requesterAddress, uint aId) public {
+
+             requesterMapping[aId] = requesterAddress;
+             requesterIndex.push(aId);
+    }
+
+    function kill() public {
+        if ( msg.sender==owner) {
+            selfdestruct(owner);
+        }
+    }
+
+  function viewSentProposals(address s) public returns(uint[] proposalIds) {
+
+     uint[] pIds;
+      for (uint index = 0; index < proposals.length; index++) {
+        if (proposals[index].sender == s) {
+              pIds.push(proposals[index].proposalId);
+        }
+      }
+
+      return pIds;
+
+  }
+
+  function viewReceivedProposals(address r) public returns(uint[] proposalIds) {
+    uint[]  pIds;
+    for (uint index = 0; index < proposals.length; index++) {
+        if (proposals[index].reciever == r) {
+              pIds.push(proposals[index].proposalId);
+        }
+      }
+      return pIds;
+ }
+
+ function viewSentGrant(address s) public returns(uint[] grantIds) {
+
+   uint[] gIds;
+      for (uint index = 0; index < grants.length; index++) {
+        if (grants[index].sender == s) {
+              gIds.push(grants[index].grantId);
+        }
+      }
+      return gIds;
+ }
+
+  function viewReceivedGrants(address r) public returns(uint[] grantIds) {
+    uint[]  gIds;
+    for (uint index = 0; index < grants.length; index++) {
+        if (grants[index].reciever == r) {
+              gIds.push(grants[index].grantId);
+        }
+      }
+      return gIds;
+ }
+
+function getCounter() private returns(uint cnt) {
+      return counter + 1;
+    }
+
 }
