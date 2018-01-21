@@ -169,21 +169,9 @@ function rejectProposal(address s, address r, bool fn, bool ln, bool dob, bool g
 
 }
 
-function revokeGrant(uint grantId, address r) {
+function revokeGrant(uint gId, address r) {
   for (uint index = 0; index < grants.length; index++) {
-      if (grants[index].reciever == r) {
-          grants[index].firstName = "";
-          grants[index].lastName = "";
-          grants[index].gender = "";
-          grants[index].phoneNumber = "";
-          grants[index].dateOfBirth = "";
-      }
-    }
-}
-
-function cancelGrant(uint grantId, address r) {
-  for (uint index = 0; index < grants.length; index++) {
-      if (grants[index].reciever == r) {
+      if (grants[index].grantId == gId) {
           grants[index].firstName = "";
           grants[index].lastName = "";
           grants[index].gender = "";
