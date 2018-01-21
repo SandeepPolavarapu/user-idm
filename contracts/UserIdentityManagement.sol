@@ -139,8 +139,62 @@ uint counter;
       return gIds;
  }
 
-function getCounter() private returns(uint cnt) {
-      return counter + 1;
+ function getGrantById(uint gId) returns (Grant gDetails) {
+   for (uint index = 0; index < grants.length; index++) {
+      if(grants[index].grantId == gId) {
+          return grants[index];
+      }
+   }
+ }
+
+ function getProposalById(uint pId) returns (Proposal pDetails) {
+   for (uint index = 0; index < proposals.length; index++) {
+      if(proposals[index].proposalId == pId) {
+          return proposals[index];
+      }
+   }
+ }
+
+function acceptProposal(address s, address r, uint pid, bool fn, bool ln, bool dob, bool gn, bool ph) {
+
+//TODO:Check sender's ownership
+     sendGrant( s,  r,  pid,  fn,  ln, dob, gn, ph);
+
+}
+
+function rejectProposal(address s, address r, bool fn, bool ln, bool dob, bool gn, bool ph) returns(string message) {
+
+//TODO:Check sender's ownership
+      return "Forbidden Request";
+
+}
+
+function revokeGrant(uint grantId, address r) {
+  for (uint index = 0; index < grants.length; index++) {
+      if (grants[index].reciever == r) {
+          grants[index].firstName = "";
+          grants[index].lastName = "";
+          grants[index].gender = "";
+          grants[index].phoneNumber = "";
+          grants[index].dateOfBirth = "";
+      }
     }
+}
+
+function cancelGrant(uint grantId, address r) {
+  for (uint index = 0; index < grants.length; index++) {
+      if (grants[index].reciever == r) {
+          grants[index].firstName = "";
+          grants[index].lastName = "";
+          grants[index].gender = "";
+          grants[index].phoneNumber = "";
+          grants[index].dateOfBirth = "";
+      }
+    }
+}
+
+function getCounter() private returns (uint cnt) {
+      return counter + 1;
+ }
 
 }
